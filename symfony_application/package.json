@@ -1,0 +1,12 @@
+{
+  "name": "wicked_truths",
+  "version": "1.0.0",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
+    "gulp-connect": "^5.7.0",
+    "gulp-livereload": "^4.0.2",
+    "less": "^3.10.3"
+  },
+  "dependencies": {}
+}
