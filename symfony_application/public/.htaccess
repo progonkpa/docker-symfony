@@ -1,0 +1,18 @@
+# Needed in shared host but not locally.
+# Source .htaccess file: https://gist.github.com/Guibzs/a3e0b3ea4eb00c246cda66994defd8a4
+
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # If you want every request to be routed through a main file
+    # (similar to how WordPress and a lot of frameworks do it) then you can use this code.
+    # Every request URL that isn't an existing file or directory will be rewritten to index.php (so users can still access .css or images).
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /index.php/
+    </IfModule>
+</IfModule>
