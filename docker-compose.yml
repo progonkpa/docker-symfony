@@ -13,6 +13,7 @@ services:
             MYSQL_PASSWORD: symfony
         networks:
             - db
+        restart: always
     php:
         container_name: php-fpm
         build: ./php-fpm
@@ -26,6 +27,7 @@ services:
         networks:
             - db
             - php
+        restart: always
     nginx:
         container_name: nginx
         build: ./nginx
@@ -38,6 +40,17 @@ services:
         volumes:
             - ./logs/nginx:/var/log/nginx:cached
             - ./symfony:/var/www/symfony:cached
+        restart: always
+    gulp:
+        container_name: gulp
+        build: ./gulp
+        volumes:
+            - ${SRC_DIR_HOST}:/opt
+        ports:
+            - "35729:35729"
+        depends_on:
+            - php
+        restart: always
     elasticsearch:
         container_name: elasticsearch
         image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
@@ -49,6 +62,7 @@ services:
             elk_stack:
                 aliases:
                     - "elasticsearch"
+        restart: always
     logstash:
         container_name: logstash
         image: docker.elastic.co/logstash/logstash:7.4.2
@@ -61,6 +75,7 @@ services:
             - ./logs/nginx:/var/log/nginx:cached
         networks:
             - elk_stack
+        restart: always
     kibana:
         container_name: kibana
         depends_on: 
@@ -73,6 +88,7 @@ services:
             - elk_stack
         ports:
             - "81:5601"
+        restart: always
 networks:
     db:
     php:
