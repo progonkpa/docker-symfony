@@ -13,7 +13,7 @@ services:
             MYSQL_PASSWORD: symfony
         networks:
             - db
-        restart: always
+#        restart: always
     php:
         container_name: php-fpm
         build: ./php-fpm
@@ -27,20 +27,20 @@ services:
         networks:
             - db
             - php
-        restart: always
+#        restart: always
     nginx:
         container_name: nginx
         build: ./nginx
         ports:
             - "80:80"
-        depends_on: 
+        depends_on:
             - php
         networks:
             - php
         volumes:
             - ./logs/nginx:/var/log/nginx:cached
             - ./symfony:/var/www/symfony:cached
-        restart: always
+#        restart: always
     gulp:
         container_name: gulp
         build: ./gulp
@@ -50,46 +50,46 @@ services:
             - "35729:35729"
         depends_on:
             - php
-        restart: always
-    elasticsearch:
-        container_name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
-        environment:
-            discovery.type: "single-node"
-        ports:
-            - "9200:9200"
-        networks:
-            elk_stack:
-                aliases:
-                    - "elasticsearch"
-        restart: always
-    logstash:
-        container_name: logstash
-        image: docker.elastic.co/logstash/logstash:7.4.2
-        depends_on: 
-            - elasticsearch
-        volumes:
-            - ./elk/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:cached
-            - ./elk/logstash/conf.d:/etc/logstash/conf.d:cached
-            - ./logs/symfony:/var/www/symfony/var/log:cached
-            - ./logs/nginx:/var/log/nginx:cached
-        networks:
-            - elk_stack
-        restart: always
-    kibana:
-        container_name: kibana
-        depends_on: 
-            - elasticsearch
-        image: docker.elastic.co/kibana/kibana:7.4.2
-        environment:
-            SERVER_NAME: localhost
-            ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-        networks:
-            - elk_stack
-        ports:
-            - "81:5601"
-        restart: always
+#        restart: always
+#    elasticsearch:
+#        container_name: elasticsearch
+#        image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+#        environment:
+#            discovery.type: "single-node"
+#        ports:
+#            - "9200:9200"
+#        networks:
+#            elk_stack:
+#                aliases:
+#                    - "elasticsearch"
+##        restart: always
+#    logstash:
+#        container_name: logstash
+#        image: docker.elastic.co/logstash/logstash:7.4.2
+#        depends_on:
+#            - elasticsearch
+#        volumes:
+#            - ./elk/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:cached
+#            - ./elk/logstash/conf.d:/etc/logstash/conf.d:cached
+#            - ./logs/symfony:/var/www/symfony/var/log:cached
+#            - ./logs/nginx:/var/log/nginx:cached
+#        networks:
+#            - elk_stack
+##        restart: always
+#    kibana:
+#        container_name: kibana
+#        depends_on:
+#            - elasticsearch
+#        image: docker.elastic.co/kibana/kibana:7.4.2
+#        environment:
+#            SERVER_NAME: localhost
+#            ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+#        networks:
+#            - elk_stack
+#        ports:
+#            - "81:5601"
+##        restart: always
 networks:
     db:
     php:
-    elk_stack:
+#    elk_stack:

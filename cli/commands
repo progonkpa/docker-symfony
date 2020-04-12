@@ -1,0 +1,17 @@
+#Build image.
+docker build -t gulp gulp
+docker build --build-arg SRC_DIR_GUEST=/var/www/symfony -t progonkpa/gulp-livereload:latest .
+
+#Start a container using the previously built image.
+docker run -v /$(pwd)/symfony:/var/www/symfony --name progonkpa_gulp-livereload progonkpa/gulp-livereload:latest sh
+docker run -v /$(pwd)/symfony:/var/www/symfony -e "SRC_DIR_GUEST=/var/www/symfony" --name progonkpa_gulp-livereload progonkpa/gulp-livereload:latest sh
+
+docker run --rm -v /$(pwd)/symfony:/opt gulp npm install
+
+#Enter a shell inside the running container.
+#The 'name' directive matches partial names.
+docker exec -it $(docker ps -aqf "name=gulp") sh
+  
+#Show logs of the gulp-livereload container (or in PhpStorm > Views > Tools > Services).
+docker logs $(docker ps -aqf "name=gulp-livereload")
+  
